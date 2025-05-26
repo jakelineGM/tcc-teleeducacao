@@ -1,0 +1,10 @@
+# Arquivos temporários e do sistema
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+node_modules/
+.env
+__pycache__/
+*.sqlite3
