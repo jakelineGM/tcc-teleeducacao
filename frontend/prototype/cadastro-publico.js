@@ -1,61 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Carregar Estados, Cidades, Ocupações (mock simples)
-  const estados = { 'AM': ['Manaus', 'Parintins'], 'SP': ['São Paulo', 'Campinas'] };
-  const ocupacoes = { 'Saúde': ['Médico', 'Enfermeiro'], 'Educação': ['Professor', 'Pedagogo'] };
-
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
   const ocupacaoSelect = document.getElementById('ocupacao');
   const atuacaoSelect = document.getElementById('atuacao');
 
-  // Popular estados
-  for (let estado in estados) {
-    const opt = document.createElement('option');
-    opt.value = estado;
-    opt.text = estado;
-    estadoSelect.add(opt);
-  }
+  // Carrega estados
+  fetch('http://localhost:4000/api/estados')
+    .then(res => res.json())
+    .then(estados => {
+      estados.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e.id_estado;
+        opt.text = e.nome;
+        estadoSelect.add(opt);
+      });
+    });
 
   estadoSelect.addEventListener('change', () => {
     cidadeSelect.innerHTML = '<option value="">Selecione a Cidade</option>';
-    const cidades = estados[estadoSelect.value] || [];
-    cidades.forEach(c => {
-      let opt = document.createElement('option');
-      opt.value = c;
-      opt.text = c;
-      cidadeSelect.add(opt);
-    });
+    fetch(`http://localhost:4000/api/cidades/${estadoSelect.value}`)
+      .then(res => res.json())
+      .then(cidades => {
+        cidades.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id_cidade;
+          opt.text = c.nome;
+          cidadeSelect.add(opt);
+        });
+      });
   });
 
-  // Popular ocupações
-  for (let o in ocupacoes) {
-    const opt = document.createElement('option');
-    opt.value = o;
-    opt.text = o;
-    ocupacaoSelect.add(opt);
-  }
+  // Carrega ocupações
+  fetch('http://localhost:4000/api/ocupacao')
+    .then(res => res.json())
+    .then(ocupacoes => {
+      ocupacoes.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.id_ocupacao;
+        opt.text = o.nome;
+        ocupacaoSelect.add(opt);
+      });
+    });
 
-  ocupacaoSelect.addEventListener('change', () => {
-    atuacaoSelect.innerHTML = '<option value="">Selecione a Atuação</option>';
-    const atuacoes = ocupacoes[ocupacaoSelect.value] || [];
+  // Carrega todas as atuações
+  fetch('http://localhost:4000/api/atuacao')
+  .then(res => res.json())
+  .then(atuacoes => {
     atuacoes.forEach(a => {
-      let opt = document.createElement('option');
-      opt.value = a;
-      opt.text = a;
+      const opt = document.createElement('option');
+      opt.value = a.id_atuacao; // Pode usar o ID como valor
+      opt.text = a.descricao;   // Nome correto agora
       atuacaoSelect.add(opt);
     });
   });
 
+
   // Submeter formulário
   document.getElementById('cadastroForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const formData = Object.fromEntries(new FormData(e.target).entries());
-    // Validações simples
-    if (!/^\d{11}$/.test(formData.cpf)) return alert('CPF inválido!');
-    if (!/^\(\d{2}\) 9\d{4}-\d{4}$/.test(formData.telefone)) return alert('Telefone inválido escreve no formato (92) 98888-8888!');
 
-    // Enviar para API
+    if (!/^\d{11}$/.test(formData.cpf)) return alert('CPF inválido! Utilize somente números');
+    if (!/^\d{11}$/.test(formData.telefone)) return alert('Telefone inválido! Utilize somente números e insira o DDD');
+
     try {
       const res = await fetch('http://localhost:4000/api/cadastro-publico', {
         method: 'POST',
@@ -64,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await res.json();
       alert(result.message || 'Cadastro realizado!');
+      window.location.href = "login-publico.html";
     } catch (err) {
       console.error(err);
       alert('Erro no cadastro!');
