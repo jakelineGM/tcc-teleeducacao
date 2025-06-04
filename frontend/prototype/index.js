@@ -1,9 +1,3 @@
-function formatarData(dataISO) {
-  const data = new Date(dataISO);
-  const opcoes = { day: '2-digit', month: 'long', year: 'numeric' };
-  return data.toLocaleDateString('pt-BR', opcoes);
-}
-
 function formatarDataComHora(dataISO) {
   const data = new Date(dataISO);
   const dataFormatada = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -62,3 +56,10 @@ fetch('http://localhost:4000/api/projetos-podcasts')
         </div>`;
     });
   });
+
+/*  function formatarData(dataISO) {
+  const data = new Date(dataISO);
+  const opcoes = { day: '2-digit', month: 'long', year: 'numeric' };
+  return data.toLocaleDateString('pt-BR', opcoes);
+}
+*/

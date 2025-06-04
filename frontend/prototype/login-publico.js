@@ -11,9 +11,13 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
     const result = await res.json();
     if (res.ok) {
+
+      // Armazena os dados do usuário no localStorage
+      localStorage.setItem('usuarioLogado', JSON.stringify(result.usuario));
+
       alert(result.message);
-      // Redirecionar para dashboard ou outra página
-      window.location.href = "index.html"; // ajusta depois
+      // Redirecionará para a tela pricipal do publico
+      window.location.href = "index.html"; //alterar depois
     } else {
       alert(result.message || 'Erro no login');
     }

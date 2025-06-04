@@ -7,6 +7,8 @@ const atuacao = require('./routes/atuacao');
 const estado_cidade = require('./routes/estado-cidade');
 const publico_login = require('./routes/publico-login');
 const home = require('./routes/home');
+const projeto = require('./routes/projeto');
+
 
 const app = express();
 app.use(cors());
@@ -19,6 +21,7 @@ app.use('/api', ocupacao);
 app.use('/api', atuacao);
 app.use('/api', publico_login);
 app.use('/api', home);
+app.use('/api', projeto);
 
 //Servidor frontend
 app.use(express.static(path.join(__dirname, '../frontend/prototype')));

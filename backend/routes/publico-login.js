@@ -14,11 +14,17 @@ router.post('/publico-login', (req, res) => {
     const match = await bcrypt.compare(senha, usuario.senha_publico);
 
     if (match) {
-      res.json({ message: `Bem-vindo, ${usuario.nome}!` });
-    } else {
-      res.status(401).json({ message: 'Email ou senha inválidos' });
-    }
+      res.json({
+        message: `Login realizado com sucesso!`,
+        usuario: {
+          id_publico: usuario.id_publico,
+          nome: usuario.nome,
+          email: usuario.email
+        }});
+      } else {
+        res.status(401).json({ message: 'Email ou senha inválidos' });
+      }
+    });
   });
-});
-
-module.exports = router;
+  
+  module.exports = router;
