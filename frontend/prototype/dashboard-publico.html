@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Público</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+  <div id="navbars"></div>
+
+  <main class="dashboard-container">
+    <aside class="menu-lateral">
+      <ul>
+        <li><a href="participacoes-publico.html">Eventos</a></li>
+        <li><a href="certificado-publico.html">Certificados</a></li>
+        <li><a href="configuracoes-publico.html">Configurações</a></li>
+        <li><a href="#" onclick="logout()">Sair</a></li>
+      </ul>
+    </aside>
+
+    <section class="painel-usuario">
+      <h2 id="boas-vindas"></h2>
+      <h3>Últimas inscrições</h3>
+      <div class="cards" id="inscricoes-recentes"></div>
+    </section>
+  </main>
+
+  <script src="dashboard-publico.js"></script>
+</body>
+
+</html>

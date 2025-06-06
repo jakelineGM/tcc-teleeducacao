@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-// Destaques (últimos 3 projetos com status 3 ou 4)
+// Destaques (últimos 3 projetos com status 3 ou 4 [Publicado ou Inscrições Abertas])
 router.get('/projetos-destaques', (req, res) => {
   const sql = `
     SELECT 
@@ -24,8 +24,8 @@ router.get('/projetos-destaques', (req, res) => {
   });
 });
 
-
-router.get('/projetos-eventos', (req, res) => {
+// Palestras(últimos 3 projetos com tipo 4 [Palestra] com status 4 [Inscrições Abertas])
+router.get('/projetos-palestras', (req, res) => {
   const sql = `
     SELECT 
       pe.id_evento,
@@ -47,7 +47,7 @@ router.get('/projetos-eventos', (req, res) => {
 });
 
 
-// Podcasts (últimos 3 podcasts com status 4)
+// Podcasts (últimos 3 projetos com tipo 5 [Podcast] com status 3 [Publicado])
 router.get('/projetos-podcasts', (req, res) => {
   const sql = `
     SELECT 
@@ -58,7 +58,7 @@ router.get('/projetos-podcasts', (req, res) => {
     JOIN Produto p ON p.id_evento = pe.id_evento
     JOIN ProdutoPalestrante pp ON pp.id_produto = p.id_produto
     JOIN Palestrante pa ON pa.id_palestrante = pp.id_palestrante
-    WHERE pe.id_status = 4 AND p.id_tipo_produto = 5
+    WHERE pe.id_status = 3 AND p.id_tipo_produto = 5
     ORDER BY pe.id_evento DESC
     LIMIT 3
   `;
@@ -67,7 +67,5 @@ router.get('/projetos-podcasts', (req, res) => {
     res.json(results);
   });
 });
-
-
 
 module.exports = router;

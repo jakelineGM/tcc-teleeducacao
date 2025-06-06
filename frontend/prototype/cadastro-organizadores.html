@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Organizadores</title>
+  <link rel="stylesheet" href="cadastro-organizadores.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cadastro</h1>
+    <form id="cadastroForm">
+      <input type="text" name="nome" placeholder="Nome completo" required />
+      <input type="text" name="telefone" placeholder="Telefone (somente números)" required />
+
+      <select name="cargo" id="cargo" required>
+        <option value="">Selecione o Cargo</option>
+      </select>
+      
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="senha" placeholder="Senha" required />
+
+      <button type="submit">Cadastrar-se</button>
+    </form>
+  </div>
+
+  <script src="cadastro-organizadores.js"></script>
+</body>
+</html>

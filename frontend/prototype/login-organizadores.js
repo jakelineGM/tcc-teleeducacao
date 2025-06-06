@@ -3,7 +3,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const formData = Object.fromEntries(new FormData(e.target).entries());
 
   try {
-    const res = await fetch('http://localhost:4000/api/publico-login', {
+    const res = await fetch('http://localhost:4000/api/organizador-login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(formData)
@@ -16,8 +16,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       localStorage.setItem('usuarioLogado', JSON.stringify(result.usuario));
 
       alert(result.message);
-      // Redirecionará para a tela pricipal do publico
-      window.location.href = "dashboard-publico.html"; //alterar depois
+      // Redirecionará para a tela pricipal do organizador
+      //window.location.href = "dashboard-organizador.html";
     } else {
       alert(result.message || 'Erro no login');
     }

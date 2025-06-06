@@ -72,7 +72,7 @@ section {
   cursor: pointer;
 }
 
-/*Parte do Projeto Educacional - Geral*/
+/***********Projeto Educacional - Geral************/
 .projeto-container {
   display: flex;
   padding: 2rem;
@@ -117,4 +117,74 @@ section {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/***********DashBoard - Público ***********/
+.dashboard-container {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.menu-lateral {
+  flex: 1;
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.menu-lateral ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-lateral li {
+  margin-bottom: 1rem;
+}
+
+.menu-lateral a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.painel-usuario {
+  flex: 4;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+/***********Participacoes - Público ***********/
+.participacoes-container {
+  padding: 2rem;
+}
+
+.participacoes-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.participacoes-container section {
+  margin-bottom: 3rem;
+}
+
+/***********Participacoes - Público ***********/
+.certificadosP-container {
+  padding: 2rem;
+}
+
+.certificadosP-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.certificadosP-container section {
+  margin-bottom: 3rem;
 }

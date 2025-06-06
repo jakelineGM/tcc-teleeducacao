@@ -1,13 +1,10 @@
-function formatarDataComHora(dataISO) {
-  const data = new Date(dataISO);
-  const dia = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-  const hora = data.getHours().toString().padStart(2, '0');
-  return `${dia}, ${hora}h`;
-}
-// Reaproveita navbar
+// Carrega as navbars
 fetch('navbar.html')
   .then(res => res.text())
-  .then(html => document.getElementById('navbars').innerHTML = html);
+  .then(html => {
+    document.getElementById('navbars').innerHTML = html;
+    personalizarNavbar();
+  });
 
 // Busca detalhes do projeto com base na query param ?id=...
 const params = new URLSearchParams(window.location.search);
@@ -16,7 +13,7 @@ const id = params.get('id');
 fetch(`http://localhost:4000/api/projeto-educacional/${id}`)
   .then(res => res.json())
   .then(data => {
-    console.log('[FRONTEND] Dados recebidos do backend:', data);
+    /*console.log('[FRONTEND] Dados recebidos do backend:', data);*/
 
     document.getElementById('titulo').textContent = data.titulo;
     document.getElementById('palestrante').textContent = data.palestrante;
@@ -50,5 +47,23 @@ fetch(`http://localhost:4000/api/projeto-educacional/${id}`)
     
   });
 
+  //Função para mudar botão entrar para o
+  function personalizarNavbar() {
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (usuario) {
+      const primeiroNome = usuario.nome.split(" ")[0];
+      const avatar = `<span>👤 Olá, ${primeiroNome}</span>`;
+      const entrarBtn = document.querySelector('.navbar-principal .entrar');
+      if (entrarBtn) entrarBtn.outerHTML = avatar;
+    }
+  }
+  
+  //Função para exibir data e hora de modo amigavel
+  function formatarDataComHora(dataISO) {
+    const data = new Date(dataISO);
+    const dataFormatada = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    const hora = data.getHours().toString().padStart(2, '0');
+    return `${dataFormatada}, ${hora}h`;
+  }
   
 

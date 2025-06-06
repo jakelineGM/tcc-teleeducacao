@@ -4,32 +4,28 @@ const bcrypt = require('bcrypt');
 const db = require('../models/db');
 
 // Cadastro de usuário
-router.post('/cadastro-publico', async (req, res) => {
-  const { nome, cpf, telefone, estado, cidade, ocupacao, atuacao, email, senha } = req.body;
+router.post('/cadastro-organizadores', async (req, res) => {
+  const { nome, telefone, cargo, email, senha } = req.body;
 
   // Validação simples (mais forte no futuro)
-  if (!/^\d{11}$/.test(cpf)) return res.status(400).json({ message: 'CPF inválido' });
+
   if (!/^\d{11}$/.test(telefone)) return res.status(400).json({ message: 'Telefone inválido' });
 
   // Verifica email único
-  db.query('SELECT id_publico FROM Publico WHERE email = ?', [email], async (err, results) => {
+  db.query('SELECT id_organizador FROM Organizador WHERE email = ?', [email], async (err, results) => {
     if (results.length > 0) return res.status(400).json({ message: 'Email já cadastrado' });
 
     const hash = await bcrypt.hash(senha, 10);
 
     const novoUsuario = {
       nome,
-      cpf,
       telefone,
       email,
-      senha_publico: hash,
-      id_estado: estado,   // <- Alinhado com o banco
-      id_cidade: cidade,   // <- Alinhado com o banco
-      id_ocupacao: ocupacao, // <- Alinhado com o banco
-      id_atuacao: atuacao    // <- Alinhado com o banco
+      senha_organizador: hash,
+      id_cargo: cargo
     };
 
-    db.query('INSERT INTO Publico SET ?', novoUsuario, (err) => {
+    db.query('INSERT INTO Organizador SET ?', novoUsuario, (err) => {
       if (err) return res.status(500).json({ message: 'Erro ao cadastrar' });
       res.json({ message: 'Cadastro realizado com sucesso!' });
     });

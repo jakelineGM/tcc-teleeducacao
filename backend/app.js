@@ -8,7 +8,14 @@ const estado_cidade = require('./routes/estado-cidade');
 const publico_login = require('./routes/publico-login');
 const home = require('./routes/home');
 const projeto = require('./routes/projeto');
-
+const dashboard_publico= require('./routes/publico-dashboard');
+const participacoes = require('./routes/publico-participacoes');
+const certificados_publico = require('./routes/publico-certificado');
+const certificados = require('./routes/certificado');
+const registro_presenca = require('./routes/registro-presenca');
+const organizador_cadastro = require('./routes/organizadores-cadastro');
+const cargo = require('./routes/cargo');
+const organizador_login = require('./routes/organizadores-login');
 
 const app = express();
 app.use(cors());
@@ -22,11 +29,21 @@ app.use('/api', atuacao);
 app.use('/api', publico_login);
 app.use('/api', home);
 app.use('/api', projeto);
+app.use('/api', dashboard_publico);
+app.use('/api', participacoes);
+app.use('/api', certificados_publico);
+app.use('/api', certificados);
+app.use('/api', registro_presenca);
+app.use('/api', organizador_cadastro);
+app.use('/api', cargo);
+app.use('/api', organizador_login);
 
 //Servidor frontend
 app.use(express.static(path.join(__dirname, '../frontend/prototype')));
 
 //Servidor de uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//Servidor de certificados
+app.use('/certificados', express.static(path.join(__dirname, 'certificados')));
 
 app.listen(4000, () => console.log('Servidor rodando na porta 4000'));
