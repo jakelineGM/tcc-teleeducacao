@@ -1,0 +1,25 @@
+01 - home
+02 - login publico
+03 - cadastro publico
+04 - projeto educacional
+05 - dashboard publico
+06 - evento publico
+07 - certificado publico
+08 - presença publico
+09 - avaliação publico
+10 - cadastro organizador
+11 - login organizador
+12 - inserir palestrante
+13 - listar palestrante
+14 - inserir projeto educacional
+15 - listar projeto educacional
+16 - inserir etapas e ações
+17 - listar etapas e ações
+18 - certificado organizador
+19 - dashboard organizador
+20 - avaliação organizador
+
+------------------------------------
+
+21 - presença organizador
+22 - 
