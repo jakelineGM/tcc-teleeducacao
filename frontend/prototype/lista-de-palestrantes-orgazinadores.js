@@ -48,14 +48,20 @@ function carregarPalestrantes(nome = '', especialidade = '') {
       data.forEach(list => {
         const html = `
           <div class="card">
-            <h4>${list.nome}</h4>
-            <p><strong>Especialidade:</strong> ${list.especialidade}</p>
-            <p><strong>Telefone:</strong> ${list.telefone}</p>
-            <p><strong>Email:</strong> ${list.email}</p>
-            <p><strong>Preferências:</strong> ${list.preferencias || 'Nenhuma'}</p>
-            ${list.crm ? `<p><strong>CRM:</strong> ${list.crm}</p>` : ''}
+            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="avatar" />
+            <div class="info">
+              <h4>${list.nome}</h4>
+              <p>${list.telefone}</p>
+              <p>${list.email}</p>
+              <p>${list.especialidade}</p>
+              ${list.crm ? `<p><strong>CRM:</strong> ${list.crm}</p>` : ''}
+            </div>
+            <div class="preferencias"><p><strong>Preferências:</strong> ${list.preferencias || 'Nenhuma'}</p></div>
           </div>
         `;
+        
+
+
         listaContainer.innerHTML += html;
       });
     });
