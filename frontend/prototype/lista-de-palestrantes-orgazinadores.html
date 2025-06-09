@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Palestrantes</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div id="navbars"></div>
+
+  <main class="palestrantes-container">
+    <h2>Palestrantes</h2>
+
+    <div class="filtros">
+      <input type="text" id="filtro-nome" placeholder="Buscar por nome..." />
+      <select id="filtro-especialidade">
+        <option value="">Todas especialidades</option>
+      </select>
+      <button onclick="window.location.href='inserir-palestrantes-organizadores.html'">Inserir</button>
+    </div>
+
+    <div id="lista-palestrantes" class="lista"></div>
+  </main>
+  <script src="lista-de-palestrantes-orgazinadores.js"></script>
+</body>
+</html>
