@@ -14,4 +14,4 @@ db.connect(err => {
   else console.log('Conectado ao MySQL!');
 });
 
-module.exports = db;
+module.exports = db.promise();
