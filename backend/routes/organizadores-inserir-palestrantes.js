@@ -6,6 +6,7 @@ router.post('/inserir-palestrante', async (req, res) => {
   try {
     const { nome, email, telefone, especialidade, crm, preferencias } = req.body;
 
+    // Validação simples do campo de telefone
     if (!/^\d{11}$/.test(telefone)) return res.status(400).json({ message: 'Telefone inválido, inserir apenas números.' });
 
     // Validação dos campos obrigatórios
@@ -47,6 +48,16 @@ router.post('/inserir-palestrante', async (req, res) => {
   } catch (error) {
     console.error('Erro ao inserir palestrante:', error);
     return res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
+});
+
+//retorna a lista de tipos de projeto registrados no sistema
+router.get('/preferencias', async (req, res) => {
+  try {
+    const [results] = await db.query('SELECT id_tipo_produto, descricao FROM TipoProduto');
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({erro: err.message});
   }
 });
 
