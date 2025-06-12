@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-router.get('/projeto-educacional/:id', (req, res) => {
-  
-  const id = req.params.id;
-  
-  /*console.log('[DEBUG] ID recebido:', id);*/
+//ROTA: GET /api/projeto-educacional/:id
+router.get('/projeto-educacional/:id_evento', async (req, res) => {
+  try{
+    const id_evento = req.params.id_evento;
+    console.log('ID do projeto educacional recebido:', id_evento);
 
-  const sql = `
+    const sql = `
     SELECT 
       pe.titulo,
       pe.descricao,
@@ -31,17 +31,30 @@ router.get('/projeto-educacional/:id', (req, res) => {
     LIMIT 1
   `;
 
-  /*console.log('[DEBUG] SQL executado:', sql);*/
+    const [projEdu] = await db.query(sql, [id_evento]);
+    
+    //Verifica se retornou algum dado
+    if (!projEdu){
+      return res.status(404).json({message: 'Projeto não encontrado'});
+    }
 
-  db.query(sql, [id], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    //Resposta com sucesso: envia JSON
+    return res.status(200).json(projEdu);
 
-    /*console.log('[DEBUG] Resultado da consulta:', results);*/
-
-    if (!results.length) return res.status(404).json({ message: 'Projeto não encontrado' });
-    res.json(results[0]);
-  });
-  
+  }
+  catch (error) {
+    console.error('Erro ao buscar projeto educacional:', error);
+    return res.status(500).json({ erro: 'Erro interno ao buscar projeto educacional.' });
+  }  
 });
+
+//id do evento e do usuario publico, 
+/*router.post('/inscrever-se/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const sql = `
+  INSERT INTO Inscricao (id_publico, id_evento) VALUES (?, ?)
+  `;
+})*/
 
 module.exports = router;

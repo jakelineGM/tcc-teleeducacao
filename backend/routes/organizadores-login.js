@@ -3,14 +3,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/db');
 
-router.post('/organizador-login', (req, res) => {
-  const { email, senha } = req.body;
+router.post('/organizador-login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
 
-  db.query('SELECT * FROM Organizador WHERE email = ?', [email], async (err, results) => {
-    if (err) return res.status(500).json({ message: 'Erro no servidor' });
-    if (results.length === 0) return res.status(401).json({ message: 'Email ou senha inválidos' });
+    const [loginOrganizador] = await db.query(`SELECT * FROM Organizador WHERE email = ?`, [email]);
 
-    const usuario = results[0];
+    if (loginOrganizador.length === 0) return res.status(401).json({ message: 'Email ou senha inválidos' });
+
+    const usuario = loginOrganizador[0];
     const match = await bcrypt.compare(senha, usuario.senha_organizador);
 
     if (match) {
@@ -20,11 +21,19 @@ router.post('/organizador-login', (req, res) => {
           id_organizador: usuario.id_organizador,
           nome: usuario.nome,
           email: usuario.email
-        }});
-      } else {
-        res.status(401).json({ message: 'Email ou senha inválidos' });
-      }
-    });
-  });
-  
-  module.exports = router;
+        }
+      });
+    } else {
+      res.status(401).json({ message: 'Email ou senha inválidos' });
+    }
+
+
+
+  }
+  catch {
+    console.error('Erro ao logar organizador:', error);
+    return res.status(500).json({ erro: 'Erro interno ao logar organizador.' });
+  }
+});
+
+module.exports = router;

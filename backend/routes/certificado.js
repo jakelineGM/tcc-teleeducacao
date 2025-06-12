@@ -3,10 +3,11 @@ const PDFDocument = require('pdfkit');
 const router = express.Router();
 const db = require('../models/db');
 
-router.get('/certificado/:id_certificado', (req, res) => {
-  const { id_certificado } = req.params;
+router.get('/certificado/:id_certificado', async (req, res) => {
+  try {
+    const id_certificado = req.params.id_certificado;
 
-  const sql = `
+    const sql = `
     SELECT 
       p.nome AS palestrante,
       pub.nome AS participante,
@@ -18,13 +19,20 @@ router.get('/certificado/:id_certificado', (req, res) => {
     JOIN Publico pub ON pub.id_publico = c.id_publico
     JOIN Palestrante p ON p.id_palestrante = c.id_palestrante
     WHERE c.id_certificado = ?;
-  `;
+    `;
 
-  db.query(sql, [id_certificado], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0) return res.status(404).json({ message: 'Certificado não encontrado' });
+    const [dadosCertificado] = await db.query(sql, [id_certificado]);
 
-    const { participante, evento, palestrante, data, registro } = results[0];
+    //Verifica se retornou algum dado
+    if (dadosCertificado.length === 0) {
+      return res.status(404).json({ message: 'Certificado não encontrado' });
+    }
+
+    //Resposta com sucesso: envia JSON
+    res.status(200).json(dadosCertificado);
+
+    /************geração do PDF ******************************************/
+    /*const { participante, evento, palestrante, data, registro } = results[0];
 
     const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
       day: '2-digit', month: 'long', year: 'numeric'
@@ -50,7 +58,12 @@ router.get('/certificado/:id_certificado', (req, res) => {
     doc.text(`Número de registro: ${registro}`, { align: 'right' });
 
     doc.end();
-  });
+    /*************************************************************************************/
+  }
+  catch {
+    console.error('Erro ao buscar certificado:', error);
+    return res.status(500).json({ erro: 'Erro interno ao buscar certificado.' });
+  }
 });
 
 module.exports = router;

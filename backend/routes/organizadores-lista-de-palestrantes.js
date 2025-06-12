@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-router.get('/palestrantes/', (req, res) => {
-  const { nome, especialidade } = req.query;
+router.get('/palestrantes/', async (req, res) => {
+  try {
+    const { nome, especialidade } = req.query;
 
-  let sql = `
+    let sql = `
     SELECT 
       p.id_palestrante,
       p.nome,
@@ -20,42 +21,57 @@ router.get('/palestrantes/', (req, res) => {
     WHERE 1 = 1
   `;
 
-  const params = [];
+    const params = [];
 
-  if (nome) {
-    sql += 'AND p.nome LIKE ?';
-    params.push(`%${nome}%`);
-  }
-
-  if (especialidade) {
-    sql += 'AND p.especialidade LIKE ?';
-    params.push(`%${especialidade}%`);
-  }
-
-  sql += ' Group by p.id_palestrante ORDER BY p.nome';
-
-  db.query(sql, params, (err, results) => {
-    if (err) {
-      console.error('--- ERRO EM /api/palestrantes ---');
-      console.error('Mensagem:', err.message);
-      console.error('Query:', sql);
-      return res.status(500).json({ message: 'Erro ao buscar palestrantes.' });
+    if (nome) {
+      sql += 'AND p.nome LIKE ?';
+      params.push(`%${nome}%`);
     }
 
-    res.json(results);
-  });
+    if (especialidade) {
+      sql += 'AND p.especialidade LIKE ?';
+      params.push(`%${especialidade}%`);
+    }
+
+    sql += ' Group by p.id_palestrante ORDER BY p.nome';
+
+    const [palestrantes]= await db.query(sql, params);
+    
+    //Resposta com sucesso: envia JSON
+    return res.status(200).json(palestrantes);
+
+  }
+  catch {
+    console.error('Erro ao buscar palestrantes:', error);
+    return res.status(500).json({ erro: 'Erro interno ao buscar palestrantes.' });
+  }
 });
 
 
 //para criar a caixa de seleção das especialidades
-router.get('/especialidades', (req, res) => {
-  const sql = `SELECT DISTINCT especialidade FROM Palestrante WHERE especialidade IS NOT NULL ORDER BY especialidade`;
+router.get('/especialidades', async (req, res) => {
+  try {
+    const [especialidades] = await db.query(`
+      SELECT DISTINCT especialidade
+      FROM Palestrante
+      WHERE especialidade IS NOT NULL
+      ORDER BY especialidade
+    `);
 
-  db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ message: 'Erro ao buscar especialidades.' });
-    res.json(results.map(row => row.especialidade));
-  });
+    //Verifica se retornou algum dado
+    if (!especialidades || especialidades.length === 0) {
+      return res.status(204).json({ message: 'Nenhuma especialidade encontrada.' });
+    }
+
+    //Resposta com sucesso: envia JSON
+    return res.status(200).json(especialidades);
+
+  }
+  catch {
+    console.error('Erro ao buscar especialidades:', error);
+    return res.status(500).json({ erro: 'Erro interno ao buscar especialidades.' });
+  }
 });
 
 
-  module.exports = router;
+module.exports = router;
