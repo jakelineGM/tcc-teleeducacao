@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const publico_cadastro = require('./routes/publico-cadastro');
 const ocupacao = require('./routes/ocupacao');
+const preferencias = require('./routes/preferencias');
 const atuacao = require('./routes/atuacao');
 const estado_cidade = require('./routes/estado-cidade');
 const publico_login = require('./routes/publico-login');
@@ -16,6 +17,8 @@ const registro_presenca = require('./routes/registro-presenca');
 const organizador_cadastro = require('./routes/organizadores-cadastro');
 const cargo = require('./routes/cargo');
 const organizador_login = require('./routes/organizadores-login');
+const organizador_lista_palestrantes = require('./routes/organizadores-lista-de-palestrantes');
+const organizador_inserir_palestrante = require('./routes/organizadores-inserir-palestrantes');
 
 const app = express();
 app.use(cors());
@@ -25,6 +28,7 @@ app.use(express.json());
 app.use('/api', publico_cadastro);
 app.use('/api', estado_cidade);
 app.use('/api', ocupacao);
+app.use('/api', preferencias);
 app.use('/api', atuacao);
 app.use('/api', publico_login);
 app.use('/api', home);
@@ -37,6 +41,8 @@ app.use('/api', registro_presenca);
 app.use('/api', organizador_cadastro);
 app.use('/api', cargo);
 app.use('/api', organizador_login);
+app.use('/api', organizador_lista_palestrantes);
+app.use('/api', organizador_inserir_palestrante);
 
 //Servidor frontend
 app.use(express.static(path.join(__dirname, '../frontend/prototype')));
