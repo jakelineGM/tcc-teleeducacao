@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-router.get('/participacoes/:id_publico', (req, res) => {
-  const { id_publico } = req.params;
+router.get('/participacoes/:id_publico', async (req, res) => {
+  try {
+    const id_publico = req.params.id_publico;
 
-  const sql = `
+    const sql = `
     SELECT 
       pe.id_evento,
       pe.titulo,
@@ -27,10 +28,15 @@ router.get('/participacoes/:id_publico', (req, res) => {
     ORDER BY pe.data_inicio DESC;
   `;
 
-  db.query(sql, [id_publico], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
+    const [listaParticipacoes] = await db.query(sql, [id_publico]);
+    //Resposta com sucesso: envia JSON
+    res.status(200).json(listaParticipacoes);
+  }
+  catch (error) {
+    console.error('Erro ao carregar participacoes:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
+
 });
 
-  module.exports = router;
+module.exports = router;

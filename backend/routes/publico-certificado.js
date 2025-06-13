@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-router.get('/certificados-publico/:id_publico', (req, res) => {
-  const { id_publico } = req.params;
+router.get('/certificados-publico/:id_publico', async (req, res) => {
+  try {
+    const id_publico = req.params.id_publico;
 
-  const sql = `
+    const sql = `
     SELECT 
       pe.titulo,
       pe.data_inicio,
@@ -21,10 +22,15 @@ router.get('/certificados-publico/:id_publico', (req, res) => {
     ORDER BY pe.data_inicio DESC;
   `;
 
-  db.query(sql, [id_publico], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
+    const [listaCertificado] = await db.query(sql, [id_publico]);
+
+    //Resposta com sucesso: envia JSON
+    res.status(200).json(listaCertificado);
+  }
+  catch (error) {
+    console.error('Erro ao lista certificados:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
 });
 
 module.exports = router;

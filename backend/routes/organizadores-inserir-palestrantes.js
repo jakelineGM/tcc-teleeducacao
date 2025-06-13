@@ -57,7 +57,7 @@ router.get('/preferencias', async (req, res) => {
     const [results] = await db.query('SELECT id_tipo_produto, descricao FROM TipoProduto');
     res.json(results);
   } catch (err) {
-    res.status(500).json({erro: err.message});
+    res.status(500).json({ erro: err.message });
   }
 });
 
