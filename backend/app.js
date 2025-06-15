@@ -18,8 +18,8 @@ const cargo = require('./routes/cargo');
 const organizador_login = require('./routes/organizadores-login');
 const organizador_lista_palestrantes = require('./routes/organizadores-lista-de-palestrantes');
 const organizador_inserir_palestrante = require('./routes/organizadores-inserir-palestrantes');
-const projeto_educacional = require('./routes/projeto-educacional');
-const produto = require('./routes/produto');
+//const projeto_educacional = require('./routes/projeto-educacional');
+//const produto = require('./routes/produto');
 const etapas_e_acoes = require('./routes/etapas-e-acoes');
 
 const app = express();
@@ -44,8 +44,8 @@ app.use('/api', cargo);
 app.use('/api', organizador_login);
 app.use('/api', organizador_lista_palestrantes);
 app.use('/api', organizador_inserir_palestrante);
-app.use('/api', projeto_educacional);
-app.use('/api', produto);
+//app.use('/api', projeto_educacional);
+//app.use('/api', produto);
 app.use('/api', etapas_e_acoes);
 
 //Servidor frontend
