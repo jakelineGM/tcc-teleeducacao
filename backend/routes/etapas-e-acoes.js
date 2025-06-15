@@ -50,7 +50,7 @@ router.post('/acoes', async (req, res) => {
             [descricao, id_status, data_inicio || null, data_fim, id_etapa, id_organizador]
         );
 
-        console.log('✅ Ação inserida com sucesso, ID:', result.insertId);
+        console.log('Ação inserida com sucesso, ID:', result.insertId);
         res.status(201).json({ id_acao: result.insertId });
     } catch (err) {
         console.error('Erro ao inserir ação:', err);
@@ -304,11 +304,20 @@ router.get('/projetos-titulo', async (req, res) => {
 
 //Listar Etapas
 router.get('/etapas-nomes', async (req, res) => {
+  const { id_evento } = req.query;
+
+  if (!id_evento) {
+    return res.status(400).json({ error: 'id_evento é obrigatório na query.' });
+  }
+
   try {
-    const [etapas] = await db.query('SELECT id_etapa, nome FROM Etapa ORDER BY id_etapa DESC');
+    const [etapas] = await db.query(
+      'SELECT id_etapa, nome FROM Etapa WHERE id_evento = ?',
+      [id_evento]
+    );
 
     if (etapas.length === 0) {
-      return res.status(404).json({ message: 'Nenhuma etapa encontrada.' });
+      return res.status(404).json({ message: 'Nenhuma etapa encontrada para este evento.' });
     }
 
     res.status(200).json(etapas);
@@ -317,6 +326,8 @@ router.get('/etapas-nomes', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar etapas.' });
   }
 });
+
+
 
 //Listar Organizadores
 router.get('/organizadores-nomes', async (req, res) => {
