@@ -3,210 +3,210 @@ const router = express.Router();
 const db = require('../models/db');
 
 const normalizarData = (data) => {
-    if (!data) return null;
-    return new Date(data).toISOString().slice(0, 19);  // yyyy-MM-ddTHH:mm:ss
+  if (!data) return null;
+  return new Date(data).toISOString().slice(0, 19);  // yyyy-MM-ddTHH:mm:ss
 };
 
 // Inserir Etapa
 router.post('/etapas', async (req, res) => {
-    const { nome, id_status, data_inicio, data_fim, id_evento } = req.body;
+  const { nome, id_status, data_inicio, data_fim, id_evento } = req.body;
 
-    // Validação dos campos obrigatórios
-    if (!nome || !id_status || !data_fim || !id_evento) {
-        console.log('Dados obrigatórios ausentes ao inserir etapa');
-        return res.status(400).json({ error: 'Campos obrigatórios: nome, id_status, data_fim, id_evento' });
-    }
+  // Validação dos campos obrigatórios
+  if (!nome || !id_status || !data_fim || !id_evento) {
+    console.log('Dados obrigatórios ausentes ao inserir etapa');
+    return res.status(400).json({ error: 'Campos obrigatórios: nome, id_status, data_fim, id_evento' });
+  }
 
-    try {
-        const [result] = await db.query(
-            `INSERT INTO Etapa (nome, id_status, data_inicio, data_fim, id_evento) VALUES (?, ?, ?, ?, ?)`,
-            [nome, id_status, data_inicio || null, data_fim, id_evento]
-        );
+  try {
+    const [result] = await db.query(
+      `INSERT INTO Etapa (nome, id_status, data_inicio, data_fim, id_evento) VALUES (?, ?, ?, ?, ?)`,
+      [nome, id_status, data_inicio || null, data_fim, id_evento]
+    );
 
-        console.log('Etapa inserida com sucesso, ID:', result.insertId);
-        res.status(201).json({ id_etapa: result.insertId });
-    } catch (err) {
-        console.error('Erro ao inserir etapa:', err);
-        res.status(500).json({ error: 'Erro interno ao inserir etapa' });
-    }
+    console.log('Etapa inserida com sucesso, ID:', result.insertId);
+    res.status(201).json({ id_etapa: result.insertId });
+  } catch (err) {
+    console.error('Erro ao inserir etapa:', err);
+    res.status(500).json({ error: 'Erro interno ao inserir etapa' });
+  }
 });
 
 // Inserir Acao
 router.post('/acoes', async (req, res) => {
-    const { descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador } = req.body;
+  const { descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador } = req.body;
 
-    // Validação dos campos obrigatórios
-    if (!descricao || !id_status || !data_fim || !id_etapa || !id_organizador) {
-        console.log('Dados obrigatórios ausentes ao inserir ação');
-        return res.status(400).json({
-            error: 'Campos obrigatórios: descricao, id_status, data_fim, id_etapa, id_organizador'
-        });
-    }
+  // Validação dos campos obrigatórios
+  if (!descricao || !id_status || !data_fim || !id_etapa || !id_organizador) {
+    console.log('Dados obrigatórios ausentes ao inserir ação');
+    return res.status(400).json({
+      error: 'Campos obrigatórios: descricao, id_status, data_fim, id_etapa, id_organizador'
+    });
+  }
 
-    try {
-        const [result] = await db.query(
-            `INSERT INTO Acao (descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador)
+  try {
+    const [result] = await db.query(
+      `INSERT INTO Acao (descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador)
        VALUES (?, ?, ?, ?, ?, ?)`,
-            [descricao, id_status, data_inicio || null, data_fim, id_etapa, id_organizador]
-        );
+      [descricao, id_status, data_inicio || null, data_fim, id_etapa, id_organizador]
+    );
 
-        console.log('Ação inserida com sucesso, ID:', result.insertId);
-        res.status(201).json({ id_acao: result.insertId });
-    } catch (err) {
-        console.error('Erro ao inserir ação:', err);
-        res.status(500).json({ error: 'Erro interno ao inserir ação' });
-    }
+    console.log('Ação inserida com sucesso, ID:', result.insertId);
+    res.status(201).json({ id_acao: result.insertId });
+  } catch (err) {
+    console.error('Erro ao inserir ação:', err);
+    res.status(500).json({ error: 'Erro interno ao inserir ação' });
+  }
 });
 
 // Alterar todas as variaveis de Etapa
 router.put('/etapas/:id', async (req, res) => {
-    const { id } = req.params;
-    const { nome, id_status, data_inicio, data_fim, id_evento } = req.body;
+  const { id } = req.params;
+  const { nome, id_status, data_inicio, data_fim, id_evento } = req.body;
 
-    if (!nome || !id_status || !data_fim || !id_evento) {
-        return res.status(400).json({ error: 'Campos obrigatórios ausentes.' });
+  if (!nome || !id_status || !data_fim || !id_evento) {
+    return res.status(400).json({ error: 'Campos obrigatórios ausentes.' });
+  }
+
+  try {
+    // Buscar dados atuais
+    const [[atual]] = await db.query('SELECT * FROM Etapa WHERE id_etapa = ?', [id]);
+    if (!atual) return res.status(404).json({ error: 'Etapa não encontrada.' });
+
+    // Identificar o que mudou
+    const alteracoes = {};
+    if (nome !== atual.nome) alteracoes.nome = { antes: atual.nome, depois: nome };
+    if (id_status !== atual.id_status) alteracoes.id_status = { antes: atual.id_status, depois: id_status };
+    if (normalizarData(data_inicio) !== normalizarData(atual.data_inicio)) {
+      alteracoes.data_inicio = { antes: normalizarData(atual.data_inicio), depois: normalizarData(data_inicio) };
+    }
+    if (normalizarData(data_fim) !== normalizarData(atual.data_fim)) {
+      alteracoes.data_fim = { antes: normalizarData(atual.data_fim), depois: normalizarData(data_fim) };
+    }
+    if (id_evento !== atual.id_evento) alteracoes.id_evento = { antes: atual.id_evento, depois: id_evento };
+
+    // Se nada mudou, avisa
+    if (Object.keys(alteracoes).length === 0) {
+      return res.status(200).json({ message: 'Nenhuma alteração detectada.' });
     }
 
-    try {
-        // Buscar dados atuais
-        const [[atual]] = await db.query('SELECT * FROM Etapa WHERE id_etapa = ?', [id]);
-        if (!atual) return res.status(404).json({ error: 'Etapa não encontrada.' });
+    // Executar a atualização
+    await db.query(
+      `UPDATE Etapa SET nome = ?, id_status = ?, data_inicio = ?, data_fim = ?, id_evento = ? WHERE id_etapa = ?`,
+      [nome, id_status, data_inicio || null, data_fim, id_evento, id]
+    );
 
-        // Identificar o que mudou
-        const alteracoes = {};
-        if (nome !== atual.nome) alteracoes.nome = { antes: atual.nome, depois: nome };
-        if (id_status !== atual.id_status) alteracoes.id_status = { antes: atual.id_status, depois: id_status };
-        if (normalizarData(data_inicio) !== normalizarData(atual.data_inicio)) {
-            alteracoes.data_inicio = { antes: normalizarData(atual.data_inicio), depois: normalizarData(data_inicio) };
-        }
-        if (normalizarData(data_fim) !== normalizarData(atual.data_fim)) {
-            alteracoes.data_fim = { antes: normalizarData(atual.data_fim), depois: normalizarData(data_fim) };
-        }
-        if (id_evento !== atual.id_evento) alteracoes.id_evento = { antes: atual.id_evento, depois: id_evento };
-
-        // Se nada mudou, avisa
-        if (Object.keys(alteracoes).length === 0) {
-            return res.status(200).json({ message: 'Nenhuma alteração detectada.' });
-        }
-
-        // Executar a atualização
-        await db.query(
-            `UPDATE Etapa SET nome = ?, id_status = ?, data_inicio = ?, data_fim = ?, id_evento = ? WHERE id_etapa = ?`,
-            [nome, id_status, data_inicio || null, data_fim, id_evento, id]
-        );
-
-        console.log(`Etapa ${id} atualizada. Alterações:`, alteracoes);
-        res.status(200).json({
-            message: 'Etapa atualizada com sucesso.',
-            alteracoes
-        });
-    } catch (err) {
-        console.error('Erro ao atualizar etapa:', err);
-        res.status(500).json({ error: 'Erro interno' });
-    }
+    console.log(`Etapa ${id} atualizada. Alterações:`, alteracoes);
+    res.status(200).json({
+      message: 'Etapa atualizada com sucesso.',
+      alteracoes
+    });
+  } catch (err) {
+    console.error('Erro ao atualizar etapa:', err);
+    res.status(500).json({ error: 'Erro interno' });
+  }
 });
 
 // Alterar todas as variaveis de Acao
 router.put('/acoes/:id', async (req, res) => {
-    const { id } = req.params;
-    const { descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador } = req.body;
+  const { id } = req.params;
+  const { descricao, id_status, data_inicio, data_fim, id_etapa, id_organizador } = req.body;
 
-    if (!descricao || !id_status || !data_fim || !id_etapa || !id_organizador) {
-        return res.status(400).json({ error: 'Campos obrigatórios ausentes.' });
+  if (!descricao || !id_status || !data_fim || !id_etapa || !id_organizador) {
+    return res.status(400).json({ error: 'Campos obrigatórios ausentes.' });
+  }
+
+  try {
+    // Buscar dados atuais
+    const [[atual]] = await db.query('SELECT * FROM Acao WHERE id_acao = ?', [id]);
+    if (!atual) return res.status(404).json({ error: 'Ação não encontrada.' });
+
+    // Comparar campo a campo
+    const alteracoes = {};
+    if (descricao !== atual.descricao) alteracoes.descricao = { antes: atual.descricao, depois: descricao };
+    if (id_status !== atual.id_status) alteracoes.id_status = { antes: atual.id_status, depois: id_status };
+    if (normalizarData(data_inicio) !== normalizarData(atual.data_inicio)) {
+      alteracoes.data_inicio = { antes: normalizarData(atual.data_inicio), depois: normalizarData(data_inicio) };
+    }
+    if (normalizarData(data_fim) !== normalizarData(atual.data_fim)) {
+      alteracoes.data_fim = { antes: normalizarData(atual.data_fim), depois: normalizarData(data_fim) };
+    }
+    if (id_etapa !== atual.id_etapa) alteracoes.id_etapa = { antes: atual.id_etapa, depois: id_etapa };
+    if (id_organizador !== atual.id_organizador) alteracoes.id_organizador = { antes: atual.id_organizador, depois: id_organizador };
+
+    // Caso nada tenha mudado
+    if (Object.keys(alteracoes).length === 0) {
+      return res.status(200).json({ message: 'Nenhuma alteração detectada.' });
     }
 
-    try {
-        // Buscar dados atuais
-        const [[atual]] = await db.query('SELECT * FROM Acao WHERE id_acao = ?', [id]);
-        if (!atual) return res.status(404).json({ error: 'Ação não encontrada.' });
+    // Executar update
+    await db.query(
+      `UPDATE Acao SET descricao = ?, id_status = ?, data_inicio = ?, data_fim = ?, id_etapa = ?, id_organizador = ? WHERE id_acao = ?`,
+      [descricao, id_status, data_inicio || null, data_fim, id_etapa, id_organizador, id]
+    );
 
-        // Comparar campo a campo
-        const alteracoes = {};
-        if (descricao !== atual.descricao) alteracoes.descricao = { antes: atual.descricao, depois: descricao };
-        if (id_status !== atual.id_status) alteracoes.id_status = { antes: atual.id_status, depois: id_status };
-        if (normalizarData(data_inicio) !== normalizarData(atual.data_inicio)) {
-            alteracoes.data_inicio = { antes: normalizarData(atual.data_inicio), depois: normalizarData(data_inicio) };
-        }
-        if (normalizarData(data_fim) !== normalizarData(atual.data_fim)) {
-            alteracoes.data_fim = { antes: normalizarData(atual.data_fim), depois: normalizarData(data_fim) };
-        }
-        if (id_etapa !== atual.id_etapa) alteracoes.id_etapa = { antes: atual.id_etapa, depois: id_etapa };
-        if (id_organizador !== atual.id_organizador) alteracoes.id_organizador = { antes: atual.id_organizador, depois: id_organizador };
-
-        // Caso nada tenha mudado
-        if (Object.keys(alteracoes).length === 0) {
-            return res.status(200).json({ message: 'Nenhuma alteração detectada.' });
-        }
-
-        // Executar update
-        await db.query(
-            `UPDATE Acao SET descricao = ?, id_status = ?, data_inicio = ?, data_fim = ?, id_etapa = ?, id_organizador = ? WHERE id_acao = ?`,
-            [descricao, id_status, data_inicio || null, data_fim, id_etapa, id_organizador, id]
-        );
-
-        console.log(`Ação ${id} atualizada. Alterações:`, alteracoes);
-        res.status(200).json({
-            message: 'Ação atualizada com sucesso.',
-            alteracoes
-        });
-    } catch (err) {
-        console.error('Erro ao atualizar ação:', err);
-        res.status(500).json({ error: 'Erro interno' });
-    }
+    console.log(`Ação ${id} atualizada. Alterações:`, alteracoes);
+    res.status(200).json({
+      message: 'Ação atualizada com sucesso.',
+      alteracoes
+    });
+  } catch (err) {
+    console.error('Erro ao atualizar ação:', err);
+    res.status(500).json({ error: 'Erro interno' });
+  }
 });
 
 // Alterar apenas Status de Etapa
 router.put('/etapas/:id/status', async (req, res) => {
-    const { id } = req.params;
-    const { id_status } = req.body;
+  const { id } = req.params;
+  const { id_status } = req.body;
 
-    if (!id_status) {
-        return res.status(400).json({ error: 'Status é obrigatório' });
-    }
+  if (!id_status) {
+    return res.status(400).json({ error: 'Status é obrigatório' });
+  }
 
-    try {
-        const [result] = await db.query(
-            'UPDATE Etapa SET id_status = ? WHERE id_etapa = ?',
-            [id_status, id]
-        );
+  try {
+    const [result] = await db.query(
+      'UPDATE Etapa SET id_status = ? WHERE id_etapa = ?',
+      [id_status, id]
+    );
 
-        console.log(`Status da Etapa ${id} atualizado para:`, id_status);
-        res.status(200).json({
-            message: 'Status da etapa atualizado',
-            id_etapa: id,
-            novo_status: id_status
-        });
-    } catch (err) {
-        console.error('Erro ao alterar status da etapa:', err);
-        res.status(500).json({ error: 'Erro interno' });
-    }
+    console.log(`Status da Etapa ${id} atualizado para:`, id_status);
+    res.status(200).json({
+      message: 'Status da etapa atualizado',
+      id_etapa: id,
+      novo_status: id_status
+    });
+  } catch (err) {
+    console.error('Erro ao alterar status da etapa:', err);
+    res.status(500).json({ error: 'Erro interno' });
+  }
 });
 
 // Alterar apenas Status de Acao
 router.put('/acoes/:id/status', async (req, res) => {
-    const { id } = req.params;
-    const { id_status } = req.body;
+  const { id } = req.params;
+  const { id_status } = req.body;
 
-    if (!id_status) {
-        return res.status(400).json({ error: 'Status é obrigatório' });
-    }
+  if (!id_status) {
+    return res.status(400).json({ error: 'Status é obrigatório' });
+  }
 
-    try {
-        const [result] = await db.query(
-            'UPDATE Acao SET id_status = ? WHERE id_acao = ?',
-            [id_status, id]
-        );
+  try {
+    const [result] = await db.query(
+      'UPDATE Acao SET id_status = ? WHERE id_acao = ?',
+      [id_status, id]
+    );
 
-        console.log(`Status da Ação ${id} atualizado para:`, id_status);
-        res.status(200).json({
-            message: 'Status da ação atualizado',
-            id_acao: id,
-            novo_status: id_status
-        });
-    } catch (err) {
-        console.error('Erro ao alterar status da ação:', err);
-        res.status(500).json({ error: 'Erro interno' });
-    }
+    console.log(`Status da Ação ${id} atualizado para:`, id_status);
+    res.status(200).json({
+      message: 'Status da ação atualizado',
+      id_acao: id,
+      novo_status: id_status
+    });
+  } catch (err) {
+    console.error('Erro ao alterar status da ação:', err);
+    res.status(500).json({ error: 'Erro interno' });
+  }
 });
 
 // Listar Etapas
@@ -268,7 +268,6 @@ router.get('/etapas/:id_etapa/acoes', async (req, res) => {
   }
 });
 
-
 // Listas Auxiliares
 // Listar Status
 router.get('/status-etapa-acao', async (req, res) => {
@@ -326,8 +325,6 @@ router.get('/etapas-nomes', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar etapas.' });
   }
 });
-
-
 
 //Listar Organizadores
 router.get('/organizadores-nomes', async (req, res) => {
