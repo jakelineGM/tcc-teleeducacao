@@ -2,18 +2,18 @@
 const fs = require('fs');
 
 // Exemplo de função para gerar certificado dinamicamente
-function gerarCertificado({ nome, projeto, palestrante, data, registro }, outputPath) {
+function gerarCertificado({ participante, evento, palestrante, data, registro }, outputPath) {
   const doc = new PDFDocument();
 
   doc.pipe(fs.createWriteStream(outputPath)); // Cria o arquivo .pdf
-
+^para cima é diferente
   doc.fontSize(22).text('CERTIFICADO', { align: 'center' });
 
   doc.moveDown();
-  doc.fontSize(14).text(`Certificamos que ${nome} participou do evento "${projeto}", ministrado por ${palestrante}, realizado em ${data}.`, {
-    align: 'justify',
-    lineGap: 8
-  });
+  doc.fontSize(14).text(
+    `Certificamos que ${participante} participou do evento "${evento}", ministrado por ${palestrante}, realizado em ${dataFormatada}.`,
+    { align: 'justify', lineGap: 8 }
+  );
 
   doc.moveDown();
   doc.text(`Número de registro: ${registro}`, { align: 'right' });
