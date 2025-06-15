@@ -223,7 +223,7 @@ router.get('/etapas', async (req, res) => {
       FROM Etapa e
       LEFT JOIN StatusEtapaAcao s ON e.id_status = s.id_status
       LEFT JOIN ProjetoEducacional p ON e.id_evento = p.id_evento
-      ORDER BY e.id_etapa
+      ORDER BY e.id_etapa DESC
     `);
 
     if (etapas.length === 0) {
@@ -254,6 +254,7 @@ router.get('/etapas/:id_etapa/acoes', async (req, res) => {
       LEFT JOIN StatusEtapaAcao s ON a.id_status = s.id_status
       LEFT JOIN Organizador o ON a.id_organizador = o.id_organizador
       WHERE a.id_etapa = ?
+      ORDER BY a.id_acao
     `, [id_etapa]);
 
     if (acoes.length === 0) {
@@ -288,7 +289,7 @@ router.get('/status-etapa-acao', async (req, res) => {
 //Listar Projetos
 router.get('/projetos-titulo', async (req, res) => {
   try {
-    const [projetos] = await db.query('SELECT id_evento, titulo FROM ProjetoEducacional');
+    const [projetos] = await db.query('SELECT id_evento, titulo FROM ProjetoEducacional ORDER BY id_evento DESC');
 
     if (projetos.length === 0) {
       return res.status(404).json({ message: 'Nenhum projeto encontrado.' });
@@ -304,7 +305,7 @@ router.get('/projetos-titulo', async (req, res) => {
 //Listar Etapas
 router.get('/etapas-nomes', async (req, res) => {
   try {
-    const [etapas] = await db.query('SELECT id_etapa, nome FROM Etapa');
+    const [etapas] = await db.query('SELECT id_etapa, nome FROM Etapa ORDER BY id_etapa DESC');
 
     if (etapas.length === 0) {
       return res.status(404).json({ message: 'Nenhuma etapa encontrada.' });
@@ -320,7 +321,7 @@ router.get('/etapas-nomes', async (req, res) => {
 //Listar Organizadores
 router.get('/organizadores-nomes', async (req, res) => {
   try {
-    const [organizadores] = await db.query('SELECT id_organizador, nome FROM Organizador');
+    const [organizadores] = await db.query('SELECT id_organizador, nome FROM Organizador ORDER BY nome');
 
     if (organizadores.length === 0) {
       return res.status(404).json({ message: 'Nenhum organizador encontrado.' });
