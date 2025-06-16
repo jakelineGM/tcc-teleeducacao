@@ -6,6 +6,28 @@ fetch('navbar.html')
         personalizarNavbar();
     });
 
+//Função para mudar botão entrar para o
+function personalizarNavbar() {
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (usuario) {
+        const primeiroNome = usuario.nome.split(" ")[0];
+        const avatar = `<span>👤 Olá, ${primeiroNome}</span>`;
+        const entrarBtn = document.querySelector('.navbar-principal .entrar');
+        if (entrarBtn) entrarBtn.outerHTML = avatar;
+    }
+}
+
+function getStatusClass(id_status) {
+    switch (id_status) {
+        case 1: return 'status-pendente';
+        case 2: return 'status-andamento';
+        case 3: return 'status-concluido';
+        case 4: return 'status-atrasado';
+        case 5: return 'status-cancelado';
+        default: return '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('lista-projetos');
     const statusList = await fetch('/api/status-etapa-acao').then(r => r.json());
@@ -38,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div>
                     <strong>${etapa.nome}</strong><br>
                     ${datas}<br>
-                    <span class="status-badge" id="status-etapa-${etapa.id_etapa}">${etapa.status}</span>
+                    <span class="status-badge ${getStatusClass(etapa.id_status)}" id="status-etapa-${etapa.id_etapa}">${etapa.status}</span>
                     <div class="status-edit" id="status-edit-etapa-${etapa.id_etapa}" style="display:none;"></div>
                 </div>
                 <div class="acoes" id="acoes-etapa-${etapa.id_etapa}">Carregando ações...</div>
@@ -72,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <span>${acao.descricao}</span>
               <span>${datasAcao}</span>
               <span>${acao.organizador || ''}</span>
-              <span class="status-badge">${acao.status}</span>
+              <span class="status-badge ${getStatusClass(acao.id_status)}">${acao.status}</span>
             </div>`;
                     acoesDiv.innerHTML += acaoHTML;
                 });
@@ -173,14 +195,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     carregarEtapasEAcoes();
 });
-
-//Função para mudar botão entrar para o
-function personalizarNavbar() {
-    const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
-    if (usuario) {
-        const primeiroNome = usuario.nome.split(" ")[0];
-        const avatar = `<span>👤 Olá, ${primeiroNome}</span>`;
-        const entrarBtn = document.querySelector('.navbar-principal .entrar');
-        if (entrarBtn) entrarBtn.outerHTML = avatar;
-    }
-}

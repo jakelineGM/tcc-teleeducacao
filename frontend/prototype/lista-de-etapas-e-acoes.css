@@ -69,8 +69,8 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: #fafafa; /* Cinza um pouco mais escuro */
-  margin-bottom: 20px; /* Mais espaço entre as etapas */
+  background-color: #fafafa;
+  margin-bottom: 20px;
   padding: 15px;
   border-radius: 8px;
   position: relative;
@@ -127,7 +127,7 @@ button:hover {
 }
 
 .status-edit button {
-  background-color: #28a745; /* Verde para o botão salvar */
+  background-color: #28a745;
   color: white;
   border: none;
   margin-left: 5px;
@@ -136,4 +136,29 @@ button:hover {
 
 .status-edit button:hover {
   background-color: #1e7e34;
+}
+
+.status-pendente {
+  background-color: orange;
+  color: white;
+}
+
+.status-andamento {
+  background-color: #007BFF;
+  color: white;
+}
+
+.status-concluido {
+  background-color: green;
+  color: white;
+}
+
+.status-atrasado {
+  background-color: red;
+  color: white;
+}
+
+.status-cancelado {
+  background-color: gray;
+  color: white;
 }

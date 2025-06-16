@@ -216,6 +216,7 @@ router.get('/etapas', async (req, res) => {
       SELECT 
         e.id_etapa,
         e.nome,
+        e.id_status,
         s.descricao AS status,
         e.data_inicio,
         e.data_fim,
@@ -246,6 +247,7 @@ router.get('/etapas/:id_etapa/acoes', async (req, res) => {
       SELECT 
         a.id_acao,
         a.descricao,
+        a.id_status,
         s.descricao AS status,
         a.data_inicio,
         a.data_fim,
