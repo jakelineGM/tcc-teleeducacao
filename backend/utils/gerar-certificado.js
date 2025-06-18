@@ -12,7 +12,7 @@ const gerarCertificado = async (id_evento, id_publico, id_certificado, db) => {
     );
 
     if (!presenca || presenca.presente !== 1) {
-      const err = new Error('O certificado não pode ser gerado porque o público não esteve presente no evento.');
+      const err = new Error('O certificado não pode ser gerado porque o inscrito não esteve presente no evento.');
       err.tipo = 'presenca_invalida';
       throw err;
     }
