@@ -12,12 +12,15 @@ if (!usuario) {
   window.location.href = "login-publico.html";
 }
 
-fetch(`http://localhost:4000/api/certificados-publico/${usuario.id_publico}`)
+//No momento não está puxando o id do usuario logado de forma automatica
+usuario.id_publico = 1;
+
+fetch(`http://localhost:4000/api/certificados/${usuario.id_publico}`)
   .then(res => res.json())
   .then(certificados => {
     const container = document.getElementById('certificadosP-lista');
     if (!certificados.length) {
-      container.innerHTML = "<p>Você ainda não tem certificados disponíveis.</p>";
+      container.innerHTML = "<p>--Você ainda não tem certificados disponíveis.</p>";
       return;
     }
 
@@ -27,7 +30,7 @@ fetch(`http://localhost:4000/api/certificados-publico/${usuario.id_publico}`)
           <h4>${cert.titulo}</h4>
           <p><strong>Palestrante:</strong> ${cert.palestrante}</p>
           <p><strong>Data:</strong> ${formatarData(cert.data_inicio)}</p>
-          <button onclick="window.open('http://localhost:4000/api/certificado/${cert.id_certificado}', '_blank')">Certificado</button>
+          <button onclick="window.open('http://localhost:4000/api/certificados/${cert.id_evento}/${cert.id_publico}/${cert.id_certificado}', '_blank')">Certificado</button>
         </div>
       `;
       //Colocar no banco de dados a coluna para onde o certificado está armazenado
