@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Associar Assinaturas ao Evento</title>
+    <link rel="stylesheet" href="associar-assinaturas.css">
+</head>
+
+<body>
+
+    <div id="navbars"></div>
+
+    <div class="header">
+        <h2>Associar Assinaturas ao Evento</h2>
+    </div>
+
+    <div class="container">
+
+        <form id="form-associacao">
+            <label for="evento">Selecione o Evento*</label>
+            <select id="evento" name="evento" required>
+                <option value="">-- Selecione um evento --</option>
+            </select>
+
+            <div id="assinaturas-container">
+                <!-- Campos de assinatura e ordem aparecerão aqui -->
+            </div>
+
+            <div id="botoes-adicionar-salvar">
+                <button type="button" id="adicionar-assinatura">+</button>
+                <br>
+                <button type="submit">Salvar Associação</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="associar-assinaturas.js"></script>
+</body>
+
+</html>
