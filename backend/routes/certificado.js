@@ -117,16 +117,20 @@ router.get('/presenca/certificados/:id_evento', async (req, res) => {
     );
 
     // Buscar lista de inscritos + presença + certificado (se já gerado)
+    // acrescimo de c.id_evento e c.id_certificado
     const [inscritos] = await db.query(`
       SELECT
         i.id_publico,
         p.nome AS nome_publico,
         i.presente,
-        c.caminho_arquivo
+        c.caminho_arquivo,
+        c.id_evento,
+        c.id_certificado
       FROM Inscricao i
       INNER JOIN Publico p ON i.id_publico = p.id_publico
       LEFT JOIN Certificado c ON c.id_evento = i.id_evento AND c.id_publico = i.id_publico
       WHERE i.id_evento = ?
+      ORDER BY nome_publico ASC
     `, [id_evento]);
 
     if (inscritos.length === 0) {
