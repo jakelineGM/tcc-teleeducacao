@@ -1,7 +1,4 @@
 const express = require('express');
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
-const path = require('path');
 const router = express.Router();
 const db = require('../models/db');
 const getUpload = require('../middlewares/upload');
