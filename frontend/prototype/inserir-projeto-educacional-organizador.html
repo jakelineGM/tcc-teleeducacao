@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Projeto Educacional</title>
+    <link rel="stylesheet" href="projeto-educacional.css">
+</head>
+
+<body>
+
+    <div id="navbars"></div>
+
+    <h2>Criar Projeto Educacional</h2>
+
+    <div class="container">
+        <form id="form-projeto">
+            <label for="titulo">Título*</label>
+            <input type="text" id="titulo" name="titulo" required>
+
+            <label for="id_status">Status*</label>
+            <select id="id_status" name="id_status" required>
+                <!-- opções carregadas via API -->
+            </select>
+
+            <label for="id_tema">Tema</label>
+            <select id="id_tema" name="id_tema">
+                <option value="">---</option>
+                <!-- opções carregadas via API -->
+            </select>
+
+            <label for="id_publico_alvo">Público Alvo</label>
+            <select id="id_publico_alvo" name="id_publico_alvo">
+                <option value="">---</option>
+                <!-- opções carregadas via API -->
+            </select>
+
+            <label for="palavra_chave">Palavra-chave</label>
+            <input type="text" id="palavra_chave" name="palavra_chave" placeholder="Opcional">
+
+            <label for="gera_certificado">Gera Certificado*</label>
+            <select id="gera_certificado" name="gera_certificado" required>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+            </select>
+
+            <label for="possui_inscricao">Possui Inscrição*</label>
+            <select id="possui_inscricao" name="possui_inscricao" required>
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+            </select>
+
+            <label for="data_inicio">Data Inicial (dd/mm/aaaa)*</label>
+            <input type="text" id="data_inicio" name="data_inicio" placeholder="dd/mm/aaaa">
+
+            <label>
+                <input type="checkbox" id="hora_inicio_check"> Inserir hora.
+            </label>
+            <input type="text" id="hora_inicio" name="hora_inicio" placeholder="HH:mm" style="display:none;">
+
+            <label>
+                <input type="checkbox" id="tem_data_fim"> Evento tem data final.
+            </label>
+            <div id="data-fim-section" style="display:none;">
+                <label for="data_fim">Data Final (dd/mm/aaaa)</label>
+                <input type="text" id="data_fim" name="data_fim" placeholder="dd/mm/aaaa">
+
+                <label>
+                    <input type="checkbox" id="hora_fim_check"> Inserir hora.
+                </label>
+                <input type="text" id="hora_fim" name="hora_fim" placeholder="HH:mm" style="display:none;">
+            </div>
+
+            <label for="imagem">Imagem</label>
+            <input type="file" id="imagem" name="imagem" disabled placeholder="Upload futuro">
+            <small>(Em breve: upload de imagem. Por enquanto, será enviado null.)</small>
+
+            <button type="submit" class="submit-btn">Criar</button>
+        </form>
+    </div>
+    <script src="inserir-projeto-educacional-organizador.js"></script>
+</body>
+
+</html>
