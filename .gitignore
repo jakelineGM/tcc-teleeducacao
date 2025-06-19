@@ -8,3 +8,5 @@ node_modules/
 .env
 __pycache__/
 *.sqlite3
+backend/uploads/certificados/
+backend/uploads/imagens/
