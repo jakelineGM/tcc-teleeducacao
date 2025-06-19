@@ -1,0 +1,6 @@
+Diretórios que devem existir.
+uploads
+    certificados
+    imagens
+    capanha-mes
+    projetos-educacionais
