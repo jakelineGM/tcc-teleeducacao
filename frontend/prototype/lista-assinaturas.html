@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Assinaturas</title>
+    <link rel="stylesheet" href="lista-assinaturas.css">
+</head>
+
+<body>
+
+    <div id="navbars"></div>
+
+    <div class="header-buttons">
+        <button onclick="window.location.href='inserir-assinatura.html'">Inserir Assinatura</button>
+        <button onclick="window.location.href='associar-assinaturas.html'">Associar Assinatura</button>
+    </div>
+
+    <div class="header">
+        <h2>Lista de Assinaturas</h2>
+    </div>
+
+    <div class="container">
+
+        <div class="tabela-assinaturas">
+            <div class="cabecalho">
+                <span>Nome</span>
+                <span>Cargo</span>
+            </div>
+            <div id="lista-assinaturas">
+                <!-- Os itens serão inseridos aqui via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="lista-assinaturas.js"></script>
+</body>
+
+</html>

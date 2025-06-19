@@ -1,13 +1,12 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const db = require('../models/db');
 const router = express.Router();
 
 router.post('/registro-presenca', async (req, res) => {
   try {
-    const { email, senha, palavra_chave } = req.body;
+    const { email, palavra_chave } = req.body;
 
-    if (!email || !senha || !palavra_chave) {
+    if (!email || !palavra_chave) {
       return res.status(400).json({ message: 'Preencha todos os campos.' });
     }
 
@@ -17,9 +16,6 @@ router.post('/registro-presenca', async (req, res) => {
     if (dadosUserPublico.length === 0) return res.status(401).json({ message: 'Email não encontrado.' });
 
     const usuario = dadosUserPublico[0];
-    console.log('Usuario: ', usuario);
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha_publico);
-    if (!senhaCorreta) return res.status(401).json({ message: 'Senha incorreta.' });
 
     // Verifica se está inscrito em algum evento com essa palavra-chave
     const sqlEvento = `
@@ -38,7 +34,12 @@ router.post('/registro-presenca', async (req, res) => {
     // Atualiza a presença
     const sqlUpdate = `UPDATE Inscricao SET presente = 1 WHERE id_publico = ? AND id_evento = ?`;
     const [atualizaPresenca] = await db.query(sqlUpdate, [usuario.id_publico, id_evento]);
-    return res.status(201).json({ message: 'Presença confirmada com sucesso!' });
+
+    // Preenche dados para o certificado
+    const registro = id_evento + '-' + usuario.id_publico;
+    const sqlCertificado = `INSERT INTO Certificado (registro, id_evento, id_publico) VALUES (?,?,?)`;
+    const [insereDadosCertificado] = await db.query(sqlCertificado, [registro, id_evento, usuario.id_publico]);
+    return res.status(201).json({ message: 'Presença confirmada com sucesso! Dados inseridos para geração de certificado.' });
 
   }
   catch (error) {

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserir Etapas e Ações</title>
+    <link rel="stylesheet" href="inserir-etapas-e-acoes.css">
+</head>
+
+<body>
+    <div id="navbars"></div>
+
+    <h2>Etapas e Ações</h2>
+
+    <div class="container">
+        <!-- Formulário de Etapa -->
+        <section class="box">
+            <h3>Etapas</h3>
+            <form id="form-etapa">
+                <label for="evento_etapa">Evento*</label>
+                <select id="evento_etapa" name="evento_etapa" required></select>
+
+                <label for="titulo_etapa">Título*</label>
+                <input type="text" id="titulo_etapa" name="titulo_etapa" required>
+
+                <label><input type="checkbox" id="check_data_inicio_etapa"> Inserir data de início</label>
+                <input type="text" id="data_inicio_etapa" name="data_inicio_etapa" placeholder="dd/mm/aaaa"
+                    style="display:none;">
+
+                <label for="data_fim_etapa">Data fim*</label>
+                <input type="text" id="data_fim_etapa" name="data_fim_etapa" placeholder="dd/mm/aaaa" required>
+
+                <label for="status_etapa">Status*</label>
+                <select id="status_etapa" name="status_etapa" required></select>
+
+                <button type="submit" class="submit-btn">Criar Etapa</button>
+            </form>
+        </section>
+
+        <!-- Formulário de Ação -->
+        <section class="box">
+            <h3>Ações</h3>
+            <form id="form-acao">
+                <label for="evento_acao">Evento*</label>
+                <select id="evento_acao" name="evento_acao" required></select>
+
+                <label for="etapa">Etapas*</label>
+                <select id="etapa" name="etapa" required></select>
+
+                <label for="titulo_acao">Título*</label>
+                <input type="text" id="titulo_acao" name="titulo_acao" required>
+
+                <label><input type="checkbox" id="check_data_inicio_acao"> Inserir data de início</label>
+                <input type="text" id="data_inicio_acao" name="data_inicio_acao" placeholder="dd/mm/aaaa"
+                    style="display:none;">
+
+                <label for="data_fim_acao">Data fim*</label>
+                <input type="text" id="data_fim_acao" name="data_fim_acao" placeholder="dd/mm/aaaa" required>
+
+                <label for="status_acao">Status*</label>
+                <select id="status_acao" name="status_acao" required></select>
+
+                <label for="organizador">Organizador*</label>
+                <select id="organizador" name="organizador" required></select>
+
+                <button type="submit" class="submit-btn">Criar Ação</button>
+            </form>
+        </section>
+    </div>
+    <script src="inserir-etapas-e-acoes.js"></script>
+</body>
+
+</html>
