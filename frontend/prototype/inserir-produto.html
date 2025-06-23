@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Inserir Produto</title>
+  <link rel="stylesheet" href="inserir-produto.css">
+</head>
+<body>
+
+  <div id="navbars"></div>
+
+  <h2>Inserir Produto</h2>
+
+  <div class="container">
+
+    <form id="form-produto" enctype="multipart/form-data">
+      <label for="evento">Evento*</label>
+      <select id="evento" name="evento" required>
+        <option value="">-- Selecione um evento --</option>
+      </select>
+
+      <label for="tipo_produto">Tipo de Produto*</label>
+      <select id="tipo_produto" name="tipo_produto" required>
+        <option value="">-- Selecione o tipo --</option>
+      </select>
+
+      <label for="palestrante">Palestrante*</label>
+      <select id="palestrante" name="palestrante" required>
+        <option value="">-- Selecione o palestrante --</option>
+      </select>
+
+      <label for="arquivo_link">Arquivo (upload) ou Link (https://)*</label>
+      <input type="text" id="arquivo_link" name="arquivo_link" placeholder="https:// OU selecione um arquivo">
+      <input type="file" id="arquivo" name="arquivo" accept="audio/*,video/*,image/*,application/pdf">
+
+      <button type="submit">Cadastrar Produto</button>
+    </form>
+  </div>
+
+  <script src="inserir-produto.js"></script>
+</body>
+</html>

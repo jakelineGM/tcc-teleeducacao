@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="lista-produtos.css">
+</head>
+
+<body>
+
+    <div id="navbars"></div>
+
+    <div class="header-buttons">
+        <button onclick="window.location.href='inserir-produto.html'">Inserir Produto</button>
+    </div>
+
+    <div class="container">
+        <h2>Produtos</h2>
+
+        <div class="filtro">
+            <span>Listar:</span>
+            <button id="btn-todos" class="filtro-btn ativo">Todos</button>
+            <button id="btn-por-projeto" class="filtro-btn">Por Projeto</button>
+        </div>
+
+        <div id="seletor-projeto" style="display:none; margin-top: 10px;">
+            <label for="projeto">Selecione o Projeto:</label>
+            <select id="projeto">
+                <option value="">-- Selecione um projeto --</option>
+            </select>
+        </div>
+
+        <div id="lista-produtos" class="tabela-produtos">
+            <!-- Lista será preenchida via JS -->
+        </div>
+    </div>
+
+    <script src="lista-produtos.js"></script>
+</body>
+
+</html>
