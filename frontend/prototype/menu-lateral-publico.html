@@ -1,0 +1,31 @@
+<div class="sidebar-pub">
+  <div class="logo">Menu</div>
+
+  <div class="menu-section">
+    <a href="participacoes-publico.html" class="menu-title-only">Minhas inscrições</a>
+  </div>
+
+  <div class="menu-section">
+    <a href="certificado-publico.html" class="menu-title-only">Meus certificados</a>
+  </div>
+
+  <a href="index.html" onclick="logout()" class="footer">Sair</a>
+</div>
+
+<!--
+NO HTML
+
+<link rel="stylesheet" href="menu-lateral.css">
+
+<div id="menu-lateral"></div>
+
+<script src="navbar.js"></script>
+
+NO JS
+// Carrega o menu lateral
+  fetch('menu-lateral-publico.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("menu-lateral").innerHTML = data;
+    });
+-->

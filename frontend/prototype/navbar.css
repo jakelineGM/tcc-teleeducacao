@@ -1,0 +1,64 @@
+/* Navbar principal */
+.navbar-principal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+}
+
+.navbar-principal .logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.botao {
+  background-color: #0077B6;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.botao:hover {
+  background-color: #005f8a;
+}
+
+.botao.sair {
+  background-color: #ef476f;
+}
+
+.botao.sair:hover {
+  background-color: #c93558;
+}
+
+/* Navbar de produtos (segunda barra) */
+.navbar-produtos {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  background: #e6f4f9;
+  padding: 0.8rem;
+}
+
+.navbar-produtos a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-produtos a:hover {
+  background-color: #cde6f2;
+  cursor: pointer;
+}

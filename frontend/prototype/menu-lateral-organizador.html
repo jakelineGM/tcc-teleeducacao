@@ -1,0 +1,53 @@
+<div class="sidebar">
+  <div class="logo">Menu</div>
+
+  <div class="menu-section">
+    <div class="menu-title">Projetos</div>
+    <a href="inserir-projeto-educacional-organizador.html" class="menu-item">➕ Criar Projeto</a>
+    <a href="lista-projetos.html" class="menu-item">📋 Gerenciar Projetos</a>
+    <a href="lista-de-etapas-e-acoes.html"class="menu-item">🗓️ Etapas e Ações</a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-title">Conteúdos / Mídias</div>
+    <a href="inserir-produto.html" class="menu-item">➕ Cadastrar</a>
+    <a href="lista-produtos.html"class="menu-item">📋 Gerenciar</a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-title">Palestrantes</div>
+    <a href="inserir-palestrante.html"class="menu-item">➕ Cadastrar</a> <!-- DESENVOLVER-->
+    <a href="lista-de-palestrantes-orgazinadores.html" class="menu-item">📋 Listar</a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-title">Assinaturas</div>
+    <a href="inserir-assinatura.html" class="menu-item">➕ Cadastrar</a>
+    <a href="associar-assinaturas.html"class="menu-item">🔗 Associar a Certificados</a>
+    <a href="lista-assinaturas.html" class="menu-item">📋 Listar</a>
+  </div>
+
+  <div class="menu-section">
+    <a href="lista-certificados-organizadores.html" class="menu-title-only">Presenças e Certificados</a>
+  </div>
+
+  <a href="login-organizadores.html" onclick="logout()" class="footer">Sair</a>
+</div>
+
+<!--
+NO HTML
+
+<link rel="stylesheet" href="menu-lateral.css">
+
+<div id="menu-lateral"></div>
+
+<script src="navbar.js"></script>
+
+NO JS
+// Carrega o menu lateral
+  fetch('menu-lateral-organizador.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("menu-lateral").innerHTML = data;
+    });
+-->
